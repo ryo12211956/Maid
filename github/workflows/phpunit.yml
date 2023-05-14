@@ -12,7 +12,7 @@ env:
 jobs:
    phpunit:
 
-     runs-on: windows-latest
+     runs-on: ubuntu-latest
 
      services:
        mysql.test:
