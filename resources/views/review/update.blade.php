@@ -1,7 +1,7 @@
-<x-layout title="編集 | メイド喫茶レビュー">
+<x-layout title="編集 | メイド喫茶ボード">
     <x-layout.single>
         <h2 class="text-center text-blue-500 text-4xl font-bold mt-8 mb-8">
-            メイド喫茶レビュー
+            メイド喫茶ボード
         </h2>
         @php
             $breadcrumbs = [

@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <title>{{ $title ?? 'メイド喫茶レビュー' }}</title>
+    <title>{{ $title ?? 'メイド喫茶ボード' }}</title>
     @stack('css')
 </head>
 <body class="bg-gray-50">

@@ -7,9 +7,13 @@ use Carbon\Carbon;
 use App\Models\Image;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use App\Modules\ImageUpload\ImageManagerInterface;
 
 class ReviewService 
 {
+    public function __construct(private ImageManagerInterface $imageManager)
+    {}
+
     public function getReviews()
     {
         return Review::with('images')->orderBy('created_at', 'DESC')->get();
@@ -41,9 +45,11 @@ class ReviewService
             $review->save();
             foreach ($images as $image)
             {
-                Storage::putFile('public/images', $image);
+                $name = $this->imageManager->save($image);
+                //Storage::putFile('public/images', $image);
                 $imageModel = new Image();
-                $imageModel->name = $image->hashName();
+                $imageModel->name = $name;
+                // $imageModel->name = $image->hashName();
                 $imageModel->save();
                 $review->images()->attach($imageModel->id);
             }
@@ -55,10 +61,11 @@ class ReviewService
         DB::transaction(function () use ($reviewId) {
             $review = Review::where('id', $reviewId)->firstOrFail();
             $review->images()->each(function ($image) use ($review){
-                $filePath = 'public/images/' . $image->name;
-                if(Storage::exists($filePath)){
-                    Storage::delete($filePath);
-                }
+                $this->imageManager->delete($image->name);
+                // $filePath = 'public/images/' . $image->name;
+                // if(Storage::exists($filePath)){
+                //     Storage::delete($filePath);
+                // }
                 $review->images()->detach($image->id);
                 $image->delete();
             });
